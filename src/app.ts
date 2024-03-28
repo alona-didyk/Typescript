@@ -1,40 +1,43 @@
-class Department {
-  // private id: string
-  //   private name: string;
-  // accessible only inside the class
-  private employees: string[] = [];
+// type addFn = (a: number, b: number) => number;
+interface addFn {
+  (a: number, b: number): number;
+}
 
-  // shortcut
-  // readonly - can not change
-  constructor(private readonly id: string, public name: string) {
-    // this.name = n;
+let add: addFn;
+
+add = (n1: number, n2: number) => {
+  return n1 + n2;
+};
+
+// interface - describe a structure of the object
+interface Named {
+  readonly name?: string;
+  outputName?: string;
+}
+
+interface Greetable extends Named {
+  greet(phrase: string): void;
+}
+
+class Person implements Greetable {
+  name?: string;
+  age = 30;
+
+  constructor(n?: string) {
+    if (n) {
+      this.name = n;
+    }
   }
 
-  // this should always reffer to an instance that in based in this class
-  describe(this: Department) {
-    console.log(`Department ${this.id}: ${this.name}`);
-  }
-
-  addEmployee(employee: string) {
-    this.employees.push(employee);
-  }
-
-  printEmployeeInformation() {
-    console.log(this.employees.length);
-    console.log(this.employees);
+  greet(phrase: string) {
+    if (this.name) {
+      console.log(phrase + " " + this.name);
+    } else {
+      console.log("Hi");
+    }
   }
 }
 
-const accounting = new Department("d1", "Accounting");
+let user1: Greetable;
 
-accounting.addEmployee("Max");
-accounting.addEmployee("Anna");
-
-// accounting.employees[2] = "John"; // error because of private
-
-accounting.describe();
-accounting.printEmployeeInformation();
-
-// const accountingCopy = { name: "Dummy", describe: accounting.describe };
-
-// accountingCopy.describe();
+user1 = new Person("Max");
